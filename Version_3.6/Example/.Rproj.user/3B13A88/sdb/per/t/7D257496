@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#========================\n#GreenSTEP Run Parameters\n#========================\n#This file identifies several run parameters that need to be defined for a scenario\n\n#Identify the base year\n#----------------------\nBaseYear = \"2005\"\n\n#Identify all the model years that could be run\n#----------------------------------------------\nYr = c(\"1990\", \"1995\", \"2000\", \"2005\", \"2010\", \"2015\", \"2020\", \"2035\", \"2050\" )\n\n#Specify whether a VMT tax surcharge is to be calculated\n#-------------------------------------------------------\n#Change value to FALSE if a VMT tax surcharge is not to be calculated\nCalcVmtSurcharge = TRUE\n\n#Specify how commercial vehicle travel is to be calculated\n#---------------------------------------------------------\n#If value is \"HouseholdDvmt\", commercial vehicle travel is calculated from \n#household DVMT. If value is \"HouseholdIncome\", commercial vehicle travel is \n#calculated from household income.  If the model is used for determining \n#compliance with DLCD target rules, value needs to be set to \"HouseholdDvmt\"\nCommVehDvmtMethod = \"HouseholdDvmt\"\n\n#Use a saved random seed value if one has been saved\n#---------------------------------------------------\n#Value of TRUE reads a saved seed from the inputs directory if the seed exists, \n#otherwise it generates a random seed value and saves it to the inputs directory\n#Value of FALSE generates a random seed value and saves it to the inputs \n#directory\nUseSavedRandomSeed = TRUE\n\n#Uncomment the following lines to complete the household synthesis only\n#----------------------------------------------------------------------\n#OnlySynthesizeHh = TRUE\n#RunYears = c( \"2005\")\n\n#Uncomment the following lines to run the travel models\n#------------------------------------------------------\nOnlySynthesizeHh = FALSE\n#RunYears = c(\"2005\", \"1990\", \"1995\", \"2000\", \"2010\", \"2015\" )\nRunYears = \"2005\"",
+    "created" : 1480358588217.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "65639419",
+    "id" : "7D257496",
+    "lastKnownWriteTime" : 1503605848,
+    "last_content_update" : 1503605848,
+    "path" : "~/Work/Projects/GreenSTEP_RSPM/Versions/State-3.6-NewMPOs/example1/run_parameters.txt",
+    "project_path" : "run_parameters.txt",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "text"
+}

@@ -1,0 +1,9 @@
+Measure,Calculation,Units
+Population,"apply( Pop.CoDt, 1, sum )",Population by county
+IncomePerCapita,"apply(HhInc.CoIgDtDg, 1, sum )  / apply( Pop.CoDt, 1, sum )",Average annual per capita income of county households in 2005 dollars
+DvmtCapHousehold,"apply(Dvmt.CoDt, 1, sum ) / apply( Pop.CoDt, 1, sum )",Average Percapita DVMT of county households
+Co2eCapHousehold,"365 * apply( HhCo2e.CoIgDtDg, 1, sum ) / apply( Pop.CoDt, 1, sum )",Annual percapita metric tons of CO2e emitted by household light-duty vehicles
+VehOpCostHousehold,"365 * apply( HhOpCost.CoIgDtDg, 1, sum ) / apply( Hh.CoIgDtDg, 1, sum )",Average annual county household vehicle operating cost
+VehOwnCostHousehold,"365 * apply(HhVehOwnCost.CoIgDtDg, 1, sum ) / apply( Hh.CoIgDtDg, 1, sum )",Average annual county household vehicle ownership cost
+SocialCostHousehold,"365 * apply( HhExtCost.CoIgDtDg, 1, sum ) / apply( Hh.CoIgDtDg, 1, sum )",Average annual county household social cost due to vehicle use
+MixedUsePopProp,"apply( Pop.CoDtDgMx[,,,""1""], 1, sum ) / apply( Pop.CoDt, 1, sum )",Proportion of county population living in mixed-use neighborhoods
