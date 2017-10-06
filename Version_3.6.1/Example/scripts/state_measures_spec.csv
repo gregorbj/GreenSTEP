@@ -1,0 +1,53 @@
+Measure,Calculation,Units
+Population,sum( Pop.CoDt ),Total population in MPO boundary
+Households,sum( Hh.CoIgDtDg ),Households in MPO boundary
+IncomePerCapita,sum( HhInc.CoIgDtDg )  / Summary_$Population,Average annual per capita income of MPO households in 2005 dollars
+IncomePerHousehold,sum( HhInc.CoIgDtDg )  / Summary_$Households,
+FuelCost,"Costs.YrCs[Year,""FuelCost""]",2005 Dollars per gasoline equivalent gallon
+FuelTax,"Costs.YrCs[Year,""GasTax""]",2005 Dollars per gasoline equivalent gallon
+NumAuto,sum( NumAuto.CoIgDtDg ),Number of household automobiles
+NumLtTruck,sum( NumLtTruck.CoIgDtDg ),Number of household light trucks
+TotHhVeh,Summary_$NumAuto + Summary_$NumLtTruck,Total number of household light-duty vehicles
+LtTruckShare,Summary_$NumLtTruck / Summary_$TotHhVeh,Light truck proportion of light vehicle fleet
+DvmtHousehold,sum( Dvmt.CoIgDtDg ),Total DVMT of MPO households
+DvmtCommercial,CommVehDvmt,Total DVMT of commercial service vehicles
+DvmtTotal,Summary_$DvmtHousehold + Summary_$DvmtCommercial,Total DVMT of MPO light duty vehicle travel
+DvmtCapHousehold,Summary_$DvmtHousehold / Summary_$Population,Average Percapita DVMT of counting only household travel
+DvmtCapTotal,Summary_$DvmtTotal / Summary_$Population,Average Percapita DVMT of counting all light-duty vehicle travel
+Co2eHousehold,365 * sum( HhCo2e.CoIgDtDg ),Annual metric tons of CO2e emitted by household light-duty vehicles
+Co2eCommercial,365 * sum( CommServAutoHcCo2e.CoDt + CommServLtTruckHcCo2e.CoDt + CommServAutoEvCo2e.CoDt + CommServLtTruckEvCo2e.CoDt ),Annual metric tons of CO2e emitted by commercial service vehicles
+Co2eTotal,Summary_$Co2eHousehold + Summary_$Co2eCommercial,Total annual metric tons of CO2e emitted by light-duty vehicles of MPO residents and businesses
+Co2eCapHousehold,Summary_$Co2eHousehold / Summary_$Population,Annual percapita metric tons of CO2e emitted by household light-duty vehicles
+Co2eMileHousehold,( 1e6  * Summary_$Co2eHousehold ) / ( 365 * Summary_$DvmtHousehold ),Household vehicle emissions rate in grams per mile
+Co2eMileCommercial,( 1e6  * Summary_$Co2eCommercial ) / ( 365 * Summary_$DvmtCommercial ),Commercial service vehicle emissions rate in grams per mile
+Co2eMileTotal,( 1e6  * Summary_$Co2eTotal ) / ( 365 * Summary_$DvmtTotal ),Average emissions rate of all light-duty vehicles in grams per mile
+FuelHousehold,365 * sum( FuelGallons.CoIgDtDg ),Annual gasoline equivalent gallons of fuel consumed by MPO households
+FuelCommercial,365 * sum( CommServAutoFuel.CoDt + CommServLtTruckFuel.CoDt ),Annual gasoline equivalent gallons of fuel consumed by MPO fuel quarters residents
+FuelTotal,Summary_$FuelHousehold + Summary_$FuelCommercial,Annual gasoline equivalent gallons of fuel consumed by MPO commercial service vehicles
+FuelEconomyHousehold,( 365 * Summary_$DvmtHousehold ) / Summary_$FuelHousehold,Average fuel economy (miles per gallon) of MPO household vehicles
+FuelEconomyCommercial,( 365 * Summary_$DvmtCommercial ) / Summary_$FuelCommercial,Average fuel economy (miles per gallon) of MPO commercial service vehicles
+FuelEconomyTotal,( 365 * Summary_$DvmtTotal ) / Summary_$FuelTotal,Average fuel economy (miles per gallon) of al MPO light-duty vehicles
+WalkTripsCap,365 * sum( WalkTrips.CoDtDgMx ) / Summary_$Population,Average annual percapita walk trips of households
+BikeTripsCap,365 * sum( BikeTrips.CoDtDgMx ) / Summary_$Population,Average annual percapita bike trips of households
+TransitTripsCap,365 * sum( TransitTrips.CoDtDgMx ) / Summary_$Population,Average annual percapita transit trips of households
+SovToBikeDiversion,"mean( LtVehParm_Va..$PropSuitable[,Year] )",Target rate of diversion of SOV tours to bike tours
+BikeDvmtCapHousehold,365 * sum( LtWtVehDvmt.CoDtDgMx ) / Summary_$Population,Average annual percapita bike miles of MPO households
+VehOpCostHousehold,365 * sum( HhOpCost.CoIgDtDg ) / Summary_$Households,Average annual MPO household vehicle operating cost
+VehOwnCostHousehold,365 * sum( HhVehOwnCost.CoIgDtDg ) / Summary_$Households,Average annual MPO household vehicle ownership cost
+VehParkingCostHousehold,365 * sum( HhParkingCost.CoIgDtDg ) / Summary_$Households,Average annual MPO household parking cost
+SocialCostHousehold,365 * sum( HhExtCost.CoIgDtDg ) / Summary_$Households,Average annual MPO household social cost due to vehicle use
+MpoLtVehDelay,"sum( DelayVehHr.MaTy[ ,""LtVeh""] )",Daily hours of light-duty vehicle delay on MPO area roads
+LtVehDelayCap,"365 * Summary_$MpoLtVehDelay / sum( Pop.CoDtDgMx[,""Metropolitan"",,] )",Annual percapita hours of light-duty vehicle delay on MPO area roads
+TruckDelay,"sum( DelayVehHr.MaTy[,""Truck""] )",Daily hours of truck delay on MPO area roads
+Temp_Pop.Ma,"tapply(Pop.CoDt[,""Metropolitan""], CountyGroups..$Msa, sum)",Temporary variable for population by metropolitan area
+BusEqTransitRevMiCap,sum( TranRevMiCap.Ma * Summary_$Temp_Pop.Ma[names(TranRevMiCap.Ma)] ) / sum( Summary_$Temp_Pop.Ma ),Annual bus-equivalent transit revenue miles per capita
+MixedUsePopProp,"sum( Pop.CoDtDgMx[,,,""1""] ) / Summary_$Population",Proportion of MPO population living in mixed-use neighborhoods
+ICE,"sum( NumPowertrain.CoVtPt[,,""Ice""] )",Number of household internal combustion engine vehicles
+HEV,"sum( NumPowertrain.CoVtPt[,,""Hev""] )",Number of household hybrid-electric vehicles
+PHEV,"sum( NumPowertrain.CoVtPt[,,""Phev""] )",Number of household plugin hybrid-electric vehicles
+EV,"sum( NumPowertrain.CoVtPt[,,""Ev""] )",Number of household electric vehicles
+Pct_DvmtCommercial,100 * Summary_$DvmtCommercial / Summary_$DvmtTotal,Percentage of commercial DVMT over the total DVMT
+Temp_HvyTruckDvmt.Ma,"Dvmt.MaTy[,""Truck""]",Temporary variable for heavy truck DVMT by metropolitan area
+Temp_LtVehDvmt.Ma,"Dvmt.MaTy[,""LtVeh""]",Temporary variable for light-duty vehicle DVMT by metropolitan area
+MpoLtVehAveSpeed,"sum( AveSpeed.MaTy[,""LtVeh""] * Summary_$Temp_LtVehDvmt.Ma ) / sum( Summary_$Temp_LtVehDvmt.Ma )",Average speed of light vehicle
+MpoHvyTruckAveSpeed,"sum( AveSpeed.MaTy[,""Truck""] * Summary_$Temp_HvyTruckDvmt.Ma ) / sum( Summary_$Temp_HvyTruckDvmt.Ma )",Average speed of heavy Truck
