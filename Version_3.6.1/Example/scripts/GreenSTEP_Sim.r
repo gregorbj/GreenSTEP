@@ -168,6 +168,13 @@ for (yr in RunYears) {
     array(0,
           dim = c(length(Co), length(Dt)),
           dimnames = list(Co, Dt))
+
+  if (yr != BaseYear) {
+    BasePop.CoDt <-
+      assignLoad(paste0(OutputBaseYearDir, "/Pop.CoDt.RData"))
+    BaseInc.CoDt <-
+      assignLoad(paste0(OutputBaseYearDir, "/Inc.CoDt.RData"))
+  }
   
   #Iterate through counties and add attributes
   for (co in Co) {
@@ -342,19 +349,15 @@ for (yr in RunYears) {
     #End for loop through counties
   }
   
-  #Save the population and income tabulations
-  save(Pop.CoDt, file = paste0(OutputYearDir, "/Pop.CoDt.RData"))
-  save(Inc.CoDt, file = paste0(OutputYearDir, "/Inc.CoDt.RData"))
-  
-  if (yr != BaseYear) {
-    BasePop.CoDt <-
-      assignLoad(paste0(OutputBaseYearDir, "/Pop.CoDt.RData"))
-    BaseInc.CoDt <-
-      assignLoad(paste0(OutputBaseYearDir, "/Inc.CoDt.RData"))
-  } else {
+  #Define BasePop.CoDt and BaseInc.CoDt for use in congestion calculations
+  if (yr == BaseYear) {
     BasePop.CoDt <- Pop.CoDt
     BaseInc.CoDt <- Inc.CoDt
   }
+  
+  #Save the population and income tabulations
+  save(Pop.CoDt, file = paste0(OutputYearDir, "/Pop.CoDt.RData"))
+  save(Inc.CoDt, file = paste0(OutputYearDir, "/Inc.CoDt.RData"))
   
   #Step 1b: Calculate freeway, arterial and transit supply by metropolitan area
   #============================================================================
@@ -388,7 +391,7 @@ for (yr in RunYears) {
       Mc <- rownames(CountyGroups..)[CountyGroups..$Msa %in% ma]
       
       #Calculate the metropolitan population
-      MetroPop <- sum(BasePop.CoDt[Mc, "Metropolitan"])
+      MetroPop <- sum(Pop.CoDt[Mc, "Metropolitan"])
       
       #Calculate per capita freeway lane miles
       FwyLnMi.Ma[ma] <- LaneMiles_Yr.MaFc[[yr]][ma, "Fwy"]
