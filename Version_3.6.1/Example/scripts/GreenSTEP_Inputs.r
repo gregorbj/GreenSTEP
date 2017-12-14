@@ -118,6 +118,14 @@ source(paste(ModelDir, "/global_values.txt", sep = ""))
 #Load the estimated model
 setwd(ModelDir)
 load("GreenSTEP_.RData")
+#Modify the congestion model Lambda values if present
+if (file.exists("mpo_lambda_values.csv")) {
+  Lambda.. <- read.csv("mpo_lambda_values.csv")
+  Lambda.Ma <- Lambda..$Lambda
+  names(Lambda.Ma) <- Lambda..$Area
+  GreenSTEP_$CongModel_$Lambda.Ma <- Lambda.Ma
+  rm(Lambda.., Lambda.Ma)
+}
 attach(GreenSTEP_)
 setwd(RunDir)
 
