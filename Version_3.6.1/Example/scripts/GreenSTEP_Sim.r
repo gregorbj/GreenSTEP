@@ -2081,8 +2081,7 @@ for (yr in RunYears) {
   TruckMpg.Ma <- MpgMpkwhAdj.MaPt[, "TruckIce"] * TruckMpg
   BusMpg.Ma <- MpgMpkwhAdj.MaPt[, "BusIce"] * BusMpg
   #Calculate fuel economy for non-metropolitan areas
-  NonMpoTruckMpg <-
-    mean(MpgMpkwhAdj.MaPt[c("RogueValley", "Bend", "Corvallis"), "TruckIce"])
+  NonMpoTruckMpg <- mean(TruckMpg.Ma[c("RogueValley", "Bend", "Corvallis")])
   
   #Calculate truck fuel consumption by fuel type
   #---------------------------------------------
@@ -2090,7 +2089,7 @@ for (yr in RunYears) {
   TruckFuel.Ma <- Dvmt.MaTy[, "Truck"] / TruckMpg.Ma
   rm(TruckMpg.Ma)
   NonMpoTruckDvmt <- TruckDvmt - sum(Dvmt.MaTy[, "Truck"])
-  NonMpoTruckFuel <- NonMpoTruckDvmt * NonMpoTruckMpg
+  NonMpoTruckFuel <- NonMpoTruckDvmt / NonMpoTruckMpg
   #Calculate fuel consumption by type
   TruckFuelProp.Ft <- numeric(5)
   names(TruckFuelProp.Ft) <- Ft
