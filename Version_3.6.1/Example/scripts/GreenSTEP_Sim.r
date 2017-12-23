@@ -1123,7 +1123,8 @@ for (yr in RunYears) {
         "Hhvehcnt",
         "Hhincttl",
         "VehType",
-        "VehAge"
+        "VehAge",
+        "DevType"
       )
     PaydWeights.Hh <-
       estPaydWeights(Data.. = SynPop..[ModelVar.], yr = yr)
