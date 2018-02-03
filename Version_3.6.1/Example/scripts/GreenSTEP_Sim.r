@@ -1,7 +1,7 @@
 #===============
 #GreenSTEP_Sim.r
 #===============
-#Copyright 2009 - 2016, Oregon Department of Transportation 
+#Copyright 2009 - 2018, Oregon Department of Transportation 
 #Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 #this file except in compliance with the License. You may obtain a copy of the
 #License at http://www.apache.org/licenses/LICENSE-2.0 
@@ -10,7 +10,7 @@
 #CONDITIONS OF ANY KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations under the License.
 #Version: 3.6.1 
-#Date: 8/15/17
+#Date: 2/2/18
 
 #Description
 #===========
@@ -1193,11 +1193,13 @@ for (yr in RunYears) {
       "CarbonTax",
       "AddedExtTax",
       "PaydCost",
+      "DailyPkgCost",
       "TotExtCost",
       "HhTotCost",
       "FutrCostPerMi",
       "VehOwnExp",
-      "TotRoadCost"
+      "TotRoadCost",
+      "EvGasEqDvmtTax"
     )
   CostSummary.CoVa <-
     array(0,
@@ -1288,7 +1290,7 @@ for (yr in RunYears) {
         VmtSurcharge <- 0
       } else {
         VmtSurcharge <-
-          VmtSurcharge.It[it - 1]   #Is value calculated in previous iteration
+          VmtSurcharge.It[it - 1]  #Is value calculated in previous iteration
       }
       #Calculate household costs
       ModelVar. <-
@@ -1330,16 +1332,15 @@ for (yr in RunYears) {
       CostSummary.CoVa[co, "PowerCost"] <- sum(Costs_$PowerCost)
       CostSummary.CoVa[co, "RoadUseTax"] <- sum(Costs_$RoadUseTax)
       CostSummary.CoVa[co, "CarbonTax"] <- sum(Costs_$CarbonTax)
-      CostSummary.CoVa[co, "AddedExtTax"] <-
-        sum(Costs_$AddedExtTax)
+      CostSummary.CoVa[co, "AddedExtTax"] <- sum(Costs_$AddedExtTax)
       CostSummary.CoVa[co, "PaydCost"] <- sum(Costs_$PaydCost)
+      CostSummary.CoVa[co, "DailyPkgCost"] <- sum(SynPop..$DailyPkgCost)
       CostSummary.CoVa[co, "TotExtCost"] <- sum(Costs_$TotExtCost)
       CostSummary.CoVa[co, "HhTotCost"] <- sum(Costs_$HhTotCost)
-      CostSummary.CoVa[co, "FutrCostPerMi"] <-
-        sum(Costs_$FutrCostPerMi)
+      CostSummary.CoVa[co, "FutrCostPerMi"] <- mean(Costs_$FutrCostPerMi)
       CostSummary.CoVa[co, "VehOwnExp"] <- sum(Costs_$VehOwnExp)
-      CostSummary.CoVa[co, "TotRoadCost"] <-
-        sum(Costs_$TotRoadCost)
+      CostSummary.CoVa[co, "TotRoadCost"] <- sum(Costs_$TotRoadCost)
+      CostSummary.CoVa[co, "EvGasEqDvmtTax"] <- Costs_$EvGasEqDvmtTax
       rm(Costs_, ModelVar.)
       gc()
       
@@ -1815,43 +1816,36 @@ for (yr in RunYears) {
       sum(CostSummary.CoVa[, "AdjDvmt"]) / sum(CostSummary.CoVa[, "Dvmt"])
     TotHhRoadCost <-
       sum(CostSummary.CoVa[, "TotRoadCost"]) * DvmtAdjRatio
-    #Calculate light vehicle DVMT
-    LtVehDvmt <-
-      sum(CostSummary.CoVa[, "AdjDvmt"]) + CommServ_$CommVehDvmt
+    #Calculate household light vehicle DVMT
+    LtVehDvmt <- sum(CostSummary.CoVa[, "AdjDvmt"])
     #First iteration, calculate the extra modernization cost for new lanes
     #(ExtraModCost)
     if (it == 1) {
       HvyVehDvmtEq <-
         TruckDvmt * CongModel_$Pce.Ty["Truck"] + 
         sum(BusDvmt.Ma) * CongModel_$Pce.Ty["Bus"]
-      LtVehAddCostProp <- LtVehDvmt / (LtVehDvmt + HvyVehDvmtEq)
+      LtVehAddCostProp <- 
+        unname(LtVehDvmt / (LtVehDvmt + HvyVehDvmtEq + CommServ_$CommVehDvmt))
       LnMiAddCost <- LtVehAddCostProp * AnnLnMiAddCosts.Yr[yr] / 365
-      ExtraModCost <- LnMiAddCost / LtVehDvmt
-      TotRoadCost <-
-        TotHhRoadCost + CommServ_$CommServCosts.["TotRoadCost"] + LnMiAddCost
+      ExtraModCost <- LnMiAddCost / LtVehDvmt #Feeds back to calcCost function
+      TotRoadCost <- TotHhRoadCost + LnMiAddCost
       rm(HvyVehDvmtEq, LtVehAddCostProp, LnMiAddCost)
-    #Otherwise sum household & commercial vehicle costs because they include
-    #the added lane-mile costs
+    #Otherwise household vehicle costs include the added lane-mile costs
     } else {
-      TotRoadCost <-
-        TotHhRoadCost + CommServ_$CommServCosts.["TotRoadCost"]
+      TotRoadCost <- TotHhRoadCost
     }
     
     # Calculate total revenues
     #-------------------------
     # Calculate total household revenues, adjusting for DVMT adjustment
-    TotHhRoadUseTax <-
-      sum(CostSummary.CoVa[, "RoadUseTax"]) * DvmtAdjRatio
+    TotRoadUseTax <- sum(CostSummary.CoVa[, "RoadUseTax"]) * DvmtAdjRatio
     #Add in estimated congestion tax if 1st iteration (since costs calculated
     #before congestion tax)
     if (it == 1) {
-      TotHhRoadUseTax <-
-        TotHhRoadUseTax + sum(HhRoadDvmt.Ma * AveCongTaxPerMi.Ma)
+      TotRoadUseTax <-
+        TotRoadUseTax + sum(HhRoadDvmt.Ma * AveCongTaxPerMi.Ma)
     }
-    #Add in commercial light service vehicle
-    TotRoadUseTax <-
-      TotHhRoadUseTax + CommServ_$CommServCosts.["RoadUseTax"]
-    
+
     #Compare total costs to revenues and calculate VMT surcharge to pay for
     #system
     #----------------------------------------------------------------------
@@ -1903,7 +1897,6 @@ for (yr in RunYears) {
       TotHhRoadCost,
       LtVehDvmt,
       TotRoadCost,
-      TotHhRoadUseTax,
       TotRoadUseTax
     )
     gc()
