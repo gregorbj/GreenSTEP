@@ -135,7 +135,9 @@ estPaydWeights <-
 # the previous function in which the EV VMT surcharge tax was calculated from an
 # exogenously input per mile tax. The problem with the previous approach is that
 # if the per mile EV VMT surcharge tax is too high, the road revenues will
-# exceed road costs.
+# exceed road costs. Also, the vehicle registration fee is added as a component
+# of the road tax. Previously it was considered a vehicle ownership cost, but
+# not considered a road tax.
 
 #Define revised function to calculate household vehicle costs
 #------------------------------------------------------------
@@ -218,8 +220,10 @@ calcCosts <- function( Data.., Costs., PaydRate, CongPrice, VmtSurcharge, ExtraM
   EvDvmtTax <- Costs.["VmtTax"] + VmtSurcharge + EvGasEqDvmtTax
   HcDvmtTax <- Costs.["VmtTax"] + VmtSurcharge
   VmtTax.Hh <- EvDvmt.Hh * EvDvmtTax + HcDvmt.Hh * HcDvmtTax
+  # Calculate daily cost of vehicle registration fee
+  DailyEqVehReg.Hh <- Data..$Hhvehcnt * sum(Costs.["VehReg"]) / 365
   # Calculate total road use taxes
-  RoadUseTax.Hh <- GasTax.Hh + CongTax.Hh + VmtTax.Hh
+  RoadUseTax.Hh <- GasTax.Hh + CongTax.Hh + VmtTax.Hh + DailyEqVehReg.Hh
   # Calculate total daily PAYD cost
   PaydCost.Hh <- Data..$Dvmt * Data..$Payd * PaydRate
   # Calculate total vehicle cost
