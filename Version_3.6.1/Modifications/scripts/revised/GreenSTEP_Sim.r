@@ -1341,6 +1341,7 @@ for (yr in RunYears) {
       CostSummary.CoVa[co, "VehOwnExp"] <- sum(Costs_$VehOwnExp)
       CostSummary.CoVa[co, "TotRoadCost"] <- sum(Costs_$TotRoadCost)
       CostSummary.CoVa[co, "EvGasEqDvmtTax"] <- Costs_$EvGasEqDvmtTax
+      CostSummary.CoVa[co, "CongPrice"] <- sum(Costs_$CongTax)
       rm(Costs_, ModelVar.)
       gc()
       
