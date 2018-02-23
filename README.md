@@ -16,3 +16,7 @@ GreenSTEP V3.6.1 adds the ability to specify a VMT tax surcharge for travel by e
 4) Correct the 'FutrCostPerMi' output in the 'CostSummary.CoVa' matrix to be the mean for households in the county rather than the sum (which is meaningless). Also changed the 'calcCosts' function to cap the FutrCostPerMi for households in a county to the 95th percentile value. It was found that for a small number of households in counties with high parking costs, that they had extremely high cost per mile because they had extremely low DVMT and parking cost. This skewed the mean value and made unrealistic.
 4) Change the calculation of total costs and VMT surcharge (Step 4e) to remove inclusion of commercial service vehicle costs and revenues. Instead, add commercial service VMT to the passenger car equivalent VMT of heavy trucks and busses to compute the household proportion of roadway modernization (add lane miles) costs. This is done to avoid having to modify the commercial service vehicle costs to account for EV VMT surcharge because if commercial service vehicle costs and revenues included, the calculation of the EV VMT surcharge would need to be done by combining the household and commercial service vehicle calculations.
 
+## Modifications to GreenSTEP V3.6.1 2/23/18
+1) calcCosts modified to include vehicle registration fees in calculation of road use taxes
+2) Modify 'GreenSTEP_Sim.R' script to assign congestion price calculations returned from calcCosts function to the CostSummary.CoVa matrix
+
