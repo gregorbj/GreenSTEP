@@ -1,0 +1,41 @@
+Per November 30, 2017 11:39 email from David Dahl/State Insurance Agency (below), make the following changes to PAYD method & Adopted Plans participation input.
+
+1. Update Weights in PAYD program (GreenSTEP.RData)
+(GreenSTEP_$estPaydWeights)
+function( Data.., yr, RunMode="run", 
+                            Weights_=list(TeenagerWt=3, LowMileageWt=3, OlderDriverWt=2,
+                                          IncomeWt=2, AutoWt=2)) {...}
+- Add "Metropolitan" weight of 3?
+- Kids change weight from 3 to 2?
+
+
+2. Adopted Plans inputs (payd.csv) 
+- Assumed % participants....still low (1%?)
+
+
+===============
+From: DAHL David F * DCBS [mailto:David.F.Dahl@oregon.gov] 
+Sent: Thursday, November 30, 2017 11:39 AM
+To: HURLEY Brian J; GAGE Gail M * DCBS; FORDHAM Brian J * DCBS; NOLEN Cliff * DCBS; DAHL David F * DCBS; VITUS Jan * DCBS
+Cc: WEIDNER Tara J; LIU Ying * DCBS; SCHOPF Michael D * DCBS
+Subject: RE: Pay-as-you-go auto insurance
+
+Hi Brian – I remember providing information about which insurers offer pay as you drive programs at different times.  One distinction that has emerged is some insurers offer program that is true pay as you drive where the policyholder receives a monthly bill that varies by recorded mileage.
+
+The better known of these are Metromile Insurance Company, which filed the first program and reported just over $500,000 in 2016, and Esurance Insurance Company, which has a similar program that started on June 10, 2015; filing number ESUR-130096656.  Esurance reported slightly more than $21 million in 2016.  This amount includes both their traditional program and their pay be mile program.  I do not have break down between programs.
+
+Most major insurers offer a telematics program that collects mileage and driver behavior.  These programs generally rate the driver on renewal based on the driving information collected.
+
+
+My understanding is pay be mile programs are marketed to urban drivers who are believed to drive fewer miles, and these drivers are considered more likely to adopt a pay by mile program.  Your chart shows this as a low weighted variable.  I’m not sure if this is the case.  The teen driver variable may be a better indicator of adopting a driver telematics program, which records driving behavior as well as mileage, than a pay as you drive program.  The Division does not have detailed information about driver participation.
+
+The better known of these are Metromile Insurance Company, which filed the first program and reported just over $500,000 in 2016, and Esurance Insurance Company, which has a similar program that started on June 10, 2015; filing number ESUR-130096656.  Esurance reported slightly more than $21 million in 2016.  This amount includes both their traditional program and their pay be mile program.  I do not have break down between programs.
+
+Please let me know if there are any questions or if you need more information.
+
+Thank you,
+David Dahl
+Casualty Actuary
+Oregon Division of Financial Regulation
+Department of Consumer and Business Services
+(503) 947-7252
